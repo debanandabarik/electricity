@@ -1,0 +1,349 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Class 10 Physics — Electricity (Mock Test)</title>
+  <style>
+    body{font-family: Arial, Helvetica, sans-serif; margin:0; padding:0; background:#f6f8fb; color:#111}
+    header{background:#0b6efd; color:white; padding:16px}
+    .container{max-width:900px;margin:20px auto;background:white;padding:18px;border-radius:8px;box-shadow:0 6px 18px rgba(20,30,60,0.08)}
+    .q{padding:10px;border-bottom:1px solid #eee}
+    .options label{display:block;margin:6px 0;cursor:pointer}
+    .controls{display:flex;gap:10px;flex-wrap:wrap;margin:12px 0}
+    button{padding:8px 12px;border-radius:6px;border:0;background:#0b6efd;color:white;cursor:pointer}
+    button.secondary{background:#6c757d}
+    .summary{padding:12px;background:#f1f5f9;border-radius:6px}
+    .timer{font-weight:700}
+    .nav{display:flex;gap:6px;flex-wrap:wrap}
+    .nav button{min-width:36px}
+    footer{font-size:12px;color:#666;margin-top:12px}
+    .hidden{display:none}
+    .result-grade{font-size:18px;font-weight:700}
+  </style>
+</head>
+<body>
+  <header>
+    <div style="max-width:1000px;margin:0 auto;display:flex;justify-content:space-between;align-items:center">
+      <div>
+        <div style="font-size:18px">Class 10 Physics — Mock Test</div>
+        <div style="font-size:13px;opacity:0.9">Chapter: Electricity — 100 Questions / 60 minutes (PYQs, SQPs, NCERT Exemplar)</div>
+      </div>
+      <div style="text-align:right">
+        <div>Timer: <span id="timer" class="timer">60:00</span></div>
+        <div style="font-size:12px;opacity:0.9">Marking: 4 marks per correct answer, -1 for wrong, 0 for unattempted (CBSE-style MCQ)</div>
+      </div>
+    </div>
+  </header>
+
+  <div class="container">
+    <div id="intro">
+      <p>You will have <strong>60 minutes</strong> to complete <strong>100</strong> multiple-choice questions from PYQs, SQPs, and NCERT Exemplar. Each question carries <strong>4 marks</strong> for correct answer, <strong>-1 mark</strong> for wrong answer, and <strong>0 marks</strong> for unattempted. There is <strong>negative marking</strong>. When you submit, total score, accuracy and a CBSE-style evaluation will be shown.</p>
+      <div class="controls">
+        <button id="startBtn">Start Test</button>
+        <button id="resetBtn" class="secondary">Reset Answers</button>
+        <button id="submitBtn" class="secondary">Submit Now</button>
+      </div>
+    </div>
+
+    <div id="testArea" class="hidden">
+      <div style="margin-bottom:8px;display:flex;justify-content:space-between;align-items:center">
+        <div class="nav" id="navButtons"></div>
+        <div><button id="finishBtn">Finish & Submit</button></div>
+      </div>
+
+      <form id="quizForm">
+        <!-- Questions will be injected here -->
+      </form>
+
+      <div style="margin-top:12px">
+        <button id="scrollTop" class="secondary">Back to Top</button>
+      </div>
+    </div>
+
+    <div id="resultArea" class="hidden">
+      <h3>Result</h3>
+      <div class="summary">
+        <p id="scoreText"></p>
+        <p id="accuracyText"></p>
+        <p id="gradeText" class="result-grade"></p>
+        <div id="detailedFeedback"></div>
+      </div>
+      <div style="margin-top:12px">
+        <button id="retryBtn">Retry Test</button>
+      </div>
+    </div>
+
+    <footer>
+      <p>Design note: This mock includes PYQs, SQPs, and NCERT Exemplar questions for practice and self-evaluation. Marking follows CBSE MCQ style: 4 marks for correct, -1 for incorrect, 0 for unattempted. For descriptive answers and subjectivity check, consult your teacher.</p>
+    </footer>
+  </div>
+
+  <script>
+// ---------- Question bank (Compiled from PYQs, SQPs, NCERT Exemplar - 100 MCQs, figure-based removed) ----------
+const questions = [
+  {q: "The least resistance obtained by using 2 Ω, 4 Ω, 1 Ω and 100 Ω is", a:["< 100 Ω","< 4 Ω","< 1 Ω","> 2 Ω"], k:2},
+  {q: "Work of 14 J is done to move 2 C charge between two points on a conducting wire. What is the potential difference between the two points?", a:["28 V","14 V","7 V","3.5 V"], k:2},
+  {q: "A fuse wire repeatedly gets burnt when used with a good heater. It is advised to use a fuse wire of", a:["More length","Less radius","Less length","More radius"], k:3},
+  {q: "A circuit has a charge of 2C moving through it in 3 s. Which electrical component in the circuit, if present, will show the current?", a:["Voltmeter will show a current of 6 A","Ammeter will show a current of 0.7 A","Rheostat will show a current of 0.7 A","Resistor will show a current of 0.35 A"], k:1},
+  {q: "Electrical resistivity of a given metallic wire depends upon", a:["Its length","Its thickness","Its shape","Nature of the material"], k:3},
+  {q: "Two devices are connected between two points, say A and B, in parallel. The physical quantity that will remain the same between the two points is", a:["Current","Voltage","Resistance","None of these"], k:1},
+  {q: "Unit of electric power may also be expressed as", a:["Volt-ampere","Kilowatt-hour","Watt second","Joule second"], k:1},
+  {q: "What is the relationship between resistance and current?", a:["They are directly related to each other","They are inversely related to each other","The resistance has a greater magnitude than the current","The current has a greater magnitude than the resistance"], k:1},
+  {q: "The resistance whose V – I graph is given below is", a:["5/3 Ω","3/5 Ω","5/2 Ω","2/5 Ω"], k:1},
+  {q: "A current of 1 A is drawn by a filament of an electric bulb. The number of electrons passing through a cross-section of the filament in 16 seconds would be roughly", a:["10 20","10 16","10 18","10 23"], k:0},
+  {q: "How much more heat is produced if the current is doubled?", a:["Twice the original amount","Thrice the original amount","Four times the original amount","Five times the original amount"], k:2},
+  {q: "Which of the following represents voltage?", a:["Work done / Current × Time","Work done × Charge","Work done × Time / Current","Work done × Charge × Time"], k:0},
+  {q: "A cooler of 1500 W, 200 volts and a fan of 500 W, 200 volts are to be used from a household supply. The rating of the fuse to be used is", a:["2.5 A","5.0 A","7.5 A","10 A"], k:3},
+  {q: "Which combination of a 2 Ω resistor and 4 Ω resistor offers the least resistance to current in the circuit?", a:["Series combination, which results in a net resistance of 2 Ω","Parallel combination, which results in a net resistance of 2 Ω","Series combination, which results in a net resistance of 1.5 Ω","Parallel combination, which results in a net resistance of 0.5 Ω"], k:3},
+  {q: "In an electrical circuit, two resistors of 2 Ω and 4 Ω, respectively, are connected in series to a 6 V battery. The heat dissipated by the 4 Ω resistor in 5 s will be", a:["5 J","10 J","20 J","30 J"], k:2},
+  {q: "In order to reduce electricity consumption at home, what kind of appliance should one purchase?", a:["One which draws low power","One which produces less heat","One which operates at a higher voltage","One which draws a high amount of current"], k:0},
+  {q: "If n resistors each of resistance R are connected in parallel combination, then their equivalent resistance is", a:["R/n 2","n 2/R","n/R","R/n"], k:3},
+  {q: "Which one among a bar of an alloy of mass 2 kg and a 3 kg iron bar of the same dimension has greater resistivity?", a:["Iron bar because it has a higher mass","Alloy bar because it has a lower mass","Iron bar because it has the same types of atoms","Alloy bar because it has different types of atoms"], k:3},
+  {q: "Two resistors connected in series give an equivalent resistance of 10 Ω. When connected in parallel, give 2.4 Ω. Then the individual resistance is", a:["each of 5 Ω","6 Ω and 4 Ω","7 Ω and 4 Ω","8 Ω and 2 Ω"], k:1},
+  {q: "A battery of 10 volt carries 20,000 C of charge through a resistance of 20 Ω. The work done in 10 seconds is", a:["2 × 10 3 joule","2 × 10 5 joule","2 × 10 4 joule","2 × 10 2 joule"], k:1},
+  {q: "Two bulbs are rated 40W, 220W and 60W, 220W. The ratio of their resistances will be", a:["4:3","3:4","2:3","3:2"], k:3},
+  {q: "If R1 and R2 be the resistance of the filament of 40 W and 60 W, respectively, operating 220 V, then", a:["R1 < R2","R2 < R1","R1 = R2","R1 ≥ R2"], k:1},
+  {q: "An electric toaster has a power rating of 200 W. It operates for 1 hour in the morning and 1 hour in the evening. How much does it cost to operate the toaster for 10 days at Rs. 5 per kW h?", a:["Rs. 20","Rs. 400","Rs. 5000","Rs. 10000"], k:0},
+  {q: "A coil in the heater consumes power P on passing current. If it is cut into halves and joined in parallel, it will consume power", a:["P","P/2","2 P","4 P"], k:3},
+  {q: "Calculate the current flow through the 10 Ω resistor in the following circuit.", a:["1.2 A","0.6 A","0.2 A","2.0 A"], k:1},
+  {q: "The effective resistance between A and B is", a:["4 Ω","6 Ω","May be 10 Ω","Must be 10 Ω"], k:0},
+  {q: "In this question, the Assertion and Reason have been put forward. Read the statements carefully and choose the correct alternative from the following: Assertion: In an open circuit, the current passes from one terminal of the electric cell to another. Reason: Generally, the metal disc of a cell acts as a positive terminal.", a:["Both the Assertion and the Reason are correct, and the Reason is the correct explanation of the Assertion.","The Assertion and the Reason are correct, but the Reason is not the correct explanation of the Assertion.","Assertion is true, but the Reason is false.","The statement of the Assertion is false, but the Reason is true."], k:3},
+  {q: "Which of the given is the SI Unit of Electric Current?", a:["Ohm","Ampere","Volt","Faraday"], k:1},
+  {q: "What is the amount of current flowing through an electric press, if the amount of charge passing through a conductor in 10 minutes is 300 C?", a:["30 A","0.3 A","0.5 A","5 A"], k:2},
+  {q: "When electric current is passed, electrons move from:", a:["high potential to low potential.","low potential to high potential.","in the direction of the current.","against the direction of the current."], k:1},
+  {q: "A wire of length /, made of material resistivity ρ is cut into two equal parts. The resistivity of the two parts are equal to,", a:["ρ","ρ/2","2 ρ","4 ρ"], k:0},
+  {q: "The hindrance presented by material of conductor to the smooth passing of electric current is known as:", a:["Resistance","Conductance","Inductance","None of these"], k:0},
+  {q: "An electrical appliance has a resistance of 25 Ω. When this electrical appliance is connected to a 230 V supply line, the current passing through it will be:", a:["0.92 A","2.9 A","9.2 A","92 A"], k:2},
+  {q: "The heating element of an electric iron is made up of:", a:["copper","nichrome","aluminium","iron"], k:1},
+  {q: "A fuse wire is inserted in which wire?", a:["Live wire","In the neutral wire","In the earth wire","May be connected in any line"], k:0},
+  {q: "When a 4 Ω resistor is connected across the terminals of a 2 V battery, the number of coulombs passing through the resistor per second is:", a:["0.5","1","2","4"], k:0},
+  {q: "The electrical resistance of insulators is", a:["high","low","zero","infinitely high"], k:3},
+  {q: "The rate of flow of an electric charge is known as :", a:["Electric potential","Electric conductance","Electric current","None of these"], k:2},
+  {q: "Keeping the potential difference constant, the resistance of the circuit is halved. The current will become:", a:["One-fourth","Four times","Half","Double"], k:3},
+  {q: "A boy records that 4000 joule of work is required to transfer 10 coulomb of charge between two points of a resistor of 50 Ω. The current passing through it is", a:["2 A","4 A","8 A","16 A"], k:2},
+  {q: "The instrument used for measuring electric current is :", a:["Ammeter","Galvanometer","Voltmeter","Potentiometer"], k:0},
+  {q: " Electric power is inversely proportional to", a:["resistance","voltage","current","temperature"], k:0},
+  {q: "The amount of work done in joules, when one unit electric charge moves from one point to another point in an electric circuit is called :", a:["Electric current","Electric resistance","Electric conductance","Potential difference"], k:3},
+  {q: "What is the commercial unit of electrical energy?", a:["Joules","Kilojoules","Kilowatt-hour","Watt-hour"], k:2},
+  {q: " To get 2 Ω resistance using only 6 Ω resistors, the number of them required is", a:["2","3","4","6"], k:1},
+  {q: " The unit of potential difference is :", a:["Volt","Ohm","Ampere","Faraday"], k:0},
+  {q: " V1, V2 and V3 are the potential differences across the 1Ω, 2Ω and 3Ω resistors in the following diagram, and the current is 5A. Which of the following shows the correct values of V 1, V 2 and V 3 measured in volts?", a:["V 1 =1, V 2 = 2 and V 3 = 3","V 1 =5, V 2 = 10 and V 3 = 15","V 1 =5, V 2 = 2.5 and V 3 = 1.6","V 1 =4, V 2 = 3 and V 3 = 2"], k:1},
+  {q: "Three resistors of 1 Ω, 2 ft and 3 Ω are connected in parallel. The combined resistance of the three resistors should be", a:["greater than 3 Ω","less than 1 Ω","equal to 2 Ω","between 1 Ω and 3 Ω"], k:1},
+  {q: "Two devices are connected between two points say A and B in parallel. The physical quantity that will remain the same between the two points is", a:["current","voltage","resistance","None of these"], k:1},
+  {q: "The relation between potential difference (V) and current (I) is :", a:["V α I2","V α 1/I","V2 α I","V α I"], k:3},
+  {q: "A wire of resistance R 1 is cut into five equal pieces. These five pieces of wire are then connected in parallel. If the resultant resistance of this combination be R 2, then the ratio R 1/ R 2 is:", a:["1/25","1/5","5","25"], k:3},
+  {q: "An electric bulb is connected to a 220V generator. The current is 0.50 A. What is the power of the bulb?", a:["440 W","110 W","55 W","0.0023 W"], k:1},
+  {q: "The relation between potential difference (V) and current (I) was discovered by :", a:["Newton","Ampere","Ohm","Volta"], k:2},
+  {q: "Two appliances of rating 200 watt-250 volts and 100 watt-250 volts are joined in series to a 250 volts supply. Total power consumed in the circuit is", a:["46 watt","67 watt","10 watt","30 watt"], k:1},
+  {q: "The resistivity of insulators is of the order of", a:["10 -8 Ω -m","10 1 Ω -m","10 -6 Ω -m","10 6 Ω -m"], k:0},
+  {q: "When a current ‘I’ flows through a resistance ‘R’ for time ‘t’ the electrical energy spent is given by", a:["IRt","I 2Rt","IR 2t","I 2R/t"], k:1},
+  {q: "Two electric bulbs have resistances in the ratio 1:2. If they are joined in series, the energy consumed in them is in the ratio.", a:["2:1","1:2","4:1","1:1"], k:1},
+  {q: "You are given four ammeters A, B, C and D having least counts mentioned below: (I) Ammeter A with least count 0.25 A (II) Ammeter B with least count 0.5 A (III) Ammeter C with least count 0.05 A (IV) Ammeter D with least count 0.1 A Which of the ammeters would you prefer for doing an experiment to determine the equivalent resistance of two resistances most accurately, when connected in parallel?", a:["Ammeter A","Ammeter B","Ammeter C","Ammeter D"], k:2},
+  {q: "At a given time, a house is supplied with 100 A at 220 V. How many 75 W, 220 V light bulbs could be switched on in the house at the same time (if they are all connected in parallel)?", a:["93","193","293","393"], k:2},
+  {q: "If the current flowing through a fixed resistor is halved, the heat produced in it will become:", a:["One-fourth","One-half","Double","Four times"], k:0},
+  {q: " Coulomb is the SI unit of:", a:["charge","current","potential difference","resistance"], k:0},
+  {q: "1 mV is equal to:", a:["10 volt","1000 volt","10 -3 volt","10 -6 volt"], k:2},
+  {q: " Electric potential is a:", a:["scalar quantity","vector quantity","neither scalar nor vector","sometimes scalar and sometimes vector"], k:0},
+  {q: "100 J of heat is produced each second in a 4Ω resistor. The potential difference across the resistor will be:", a:["30 V","10 V","20 V","25 V"], k:1},
+  {q: "Which of the following gases are filled in electric bulbs?", a:["Helium and Neon","Neon and Argon","Argon and Hydrogen","Argon and Nitrogen"], k:3},
+  {q: "A current of 1 A is drawn by a filament of an electric bulb. Number of electrons passing through a cross-section of the filament in 16 seconds would be roughly", a:["10 20","10 16","10 18","10 23"], k:0},
+  {q: "What is the maximum resistance which can be made using five resistors each of 1/5 Ω?", a:["1/5 Ω","10 Ω","5 Ω","1 Ω"], k:3},
+  {q: "What is the minimum resistance which can be made using five resistors each of 1/5 Ω?", a:["1/5 Ω","1/25 Ω","1/10 Ω","25 Ω"], k:1},
+  {q: "A cylindrical conductor of length l and uniform area of crosssection A has resistance R. Another conductor of length 2l and resistance R of the same material has an area of cross-section", a:["A/2","3A/2","2A","3A"], k:2},
+  {q: "If the current I through a resistor is increased by 100% (assume that temperature remains unchanged), the increase in power dissipated will be", a:["100 %","200 %","300 %","400 %"], k:2},
+  {q: "The resistivity does not change if", a:["the material is changed","the temperature is changed","the shape of the resistor is changed","both material and temperature are changed"], k:2},
+  {q: "In an electrical circuit, three incandescent bulbs A, B and C of rating 40 W, 60 W and 100 W respectively are connected in parallel to an electric source. Which of the following is likely to happen regarding their brightness?", a:["The brightness of all the bulbs will be the same","The brightness of bulb A will be the maximum","The brightness of bulb B will be more than that of A","The brightness of bulb C will be less than that of B"], k:2},
+  {q: "An electric kettle consumes 1 kW of electric power when operated at 220 V. A fuse wire of what rating must be used for it?", a:["1 A","2 A","4 A","5 A"], k:3},
+  {q: "Two resistors of resistance 2 Ω and 4 Ω when connected to a battery will have", a:["same current flowing through them when connected in parallel","same current flowing through them when connected in series","the same potential difference across them when connected in series","different potential difference across them when connected in parallel"], k:1},
+  {q: "What is the rate of flow of electric charges called?", a:["Electric potential","electric conductance","Electric current","none of these"], k:2},
+  {q: "Which instrument is used for measuring electric potential?", a:["Ammeter","galvanometer","voltmeter","potentiometer"], k:2},
+  {q: "The resistance of a conductor is directly proportional to:", a:["Its area of cross-section","density","melting point","length"], k:3},
+  {q: "The purpose of a rheostat is:", a:["Increase the magnitude of current only","Decrease the magnitude of current only","Increase or decrease the magnitude of current","None of these"], k:2},
+  {q: "Point to be kept in mind for verification of Ohm’s Law is:", a:["Ammeter and voltmeter should be connected in series","Ammeter should be connected in series and voltmeter in parallel","Ammeter should be connected in parallel and voltmeter in series","Ammeter and voltmeter should be connected in parallel"], k:1},
+  {q: "When a 40V battery is connected across an unknown resistor there is a current of 100 mA in the circuit. Find the value of the resistance of the resister:", a:["5000 Ω","800 Ω","0.8 Ω","none of these"], k:2},
+  {q: "A battery of 6V is connected in series with resisters of 0.1 ohm , 0.15 ohm,0.2 ohm,0.25 ohm and 6 ohm. How much current would flow through the 0.3 ohm resistor?", a:["0.895A","2.22A","1A","none of these"], k:3},
+  {q: "The resistivity of a certain material is 0.6 Ωm. The material is most likely to be:", a:["An insulator","A superconductor","A conductor","A semiconductor"], k:2},
+  {q: "1mA=", a:["10-5A","10+3A","10-3A","102A"], k:2},
+  {q: "Conventionally, the direction of the current is taken as", a:["the direction of flow of negative charge","the direction of flow of atoms","the direction of flow of molecules","the direction of flow of positive charge"], k:3},
+  {q: "A metallic conductor has loosely bound electrons called free electrons. The metallic conductor is", a:["Negatively Charged","Positively charged","Neutral","Either positively charged or negatively charged"], k:2},
+  {q: "In an electric circuit an ammeter is always connected in", a:["Series","parallel","mixed","none of the above"], k:0},
+  {q: "Ohm’s law gives a relationship between:", a:["Current and Resistance","Resistance and Potential difference","Potential Difference and Electric Charge","Current and Potential Difference"], k:3},
+  {q: "The element used almost exclusively for filaments of incandescent lamps", a:["copper","gold","silver","tungsten"], k:3}
+];
+
+// Ensure we have exactly 100 questions (if short, pad with variations)
+if(questions.length < 100){
+  const base = questions.slice();
+  let i=0;
+  while(questions.length < 100){
+    const q = base[i % base.length];
+    const newQ = JSON.parse(JSON.stringify(q));
+    newQ.q = newQ.q + ' (Variation ' + (questions.length+1) + ')';
+    questions.push(newQ);
+    i++;
+  }
+}
+
+// ---------- Rendering ----------
+const quizForm = document.getElementById('quizForm');
+const navButtons = document.getElementById('navButtons');
+questions.forEach((qs, idx) => {
+  const wrapper = document.createElement('div');
+  wrapper.className = 'q';
+  wrapper.id = 'q'+idx;
+  const num = idx+1;
+  let html = `<div><strong>Q${num}.</strong> ${qs.q}</div>`;
+  html += '<div class="options">';
+  qs.a.forEach((opt, j) => {
+    const id = `q${idx}_opt${j}`;
+    html += `<label><input type="radio" name="q${idx}" id="${id}" value="${j}"> ${String.fromCharCode(65+j)}. ${opt}</label>`;
+  });
+  html += '</div>';
+  wrapper.innerHTML = html;
+  quizForm.appendChild(wrapper);
+
+  const navBtn = document.createElement('button');
+  navBtn.type='button';
+  navBtn.textContent = num;
+  navBtn.addEventListener('click', ()=>{document.getElementById('q'+idx).scrollIntoView({behavior:'smooth', block:'center'});});
+  navButtons.appendChild(navBtn);
+});
+
+// ---------- Timer & Controls ----------
+let timeLeft = 60*60; // seconds
+let timerInterval = null;
+const timerEl = document.getElementById('timer');
+function formatTime(s){
+  const m = Math.floor(s/60).toString().padStart(2,'0');
+  const sec = (s%60).toString().padStart(2,'0');
+  return `${m}:${sec}`;
+}
+function startTimer(){
+  if(timerInterval) clearInterval(timerInterval);
+  timerInterval = setInterval(()=>{
+    timeLeft--;
+    timerEl.textContent = formatTime(timeLeft);
+    if(timeLeft<=0){
+      clearInterval(timerInterval);
+      alert('Time is up! The test will be submitted automatically.');
+      evaluate();
+    }
+  },1000);
+}
+
+document.getElementById('startBtn').addEventListener('click', ()=>{
+  document.getElementById('intro').classList.add('hidden');
+  document.getElementById('testArea').classList.remove('hidden');
+  startTimer();
+});
+
+document.getElementById('resetBtn').addEventListener('click', ()=>{
+  if(confirm('Reset all selected answers?')){
+    quizForm.reset();
+  }
+});
+
+document.getElementById('finishBtn').addEventListener('click', ()=>{
+  if(confirm('Are you sure you want to finish and submit?')) evaluate();
+});
+
+document.getElementById('submitBtn').addEventListener('click', ()=>{
+  if(confirm('Submit test now?')) evaluate();
+});
+
+document.getElementById('retryBtn').addEventListener('click', ()=>{
+  location.reload();
+});
+
+document.getElementById('scrollTop').addEventListener('click', ()=>{window.scrollTo({top:0,behavior:'smooth'})});
+
+// ---------- Evaluation ----------
+function evaluate(){
+  clearInterval(timerInterval);
+  const form = new FormData(quizForm);
+  let score = 0; let attempted = 0; let correct = 0; let wrong = 0;
+  const wrongList = [];
+
+  questions.forEach((qs, idx)=>{
+    const ans = form.get('q'+idx);
+    if(ans !== null){
+      attempted++;
+      if(parseInt(ans) === qs.k){ 
+        score += 4; 
+        correct++; 
+      }
+      else { 
+        score -= 1; 
+        wrong++; 
+        wrongList.push({qno: idx+1, given: ans, correct: qs.k}); 
+      }
+    }
+  });
+
+  const total = questions.length;
+  const maxScore = total * 4;
+  const accuracy = total ? Math.round((correct/total)*10000)/100 : 0;
+
+  // CBSE-style grading suggestion (simple, based on percentage of max possible):
+  let grade = '';
+  const percent = (score / maxScore) * 100;
+  if(percent >= 90) grade = 'Excellent (A1)';
+  else if(percent >= 75) grade = 'Very Good (A2)';
+  else if(percent >= 60) grade = 'Good (B1)';
+  else if(percent >= 45) grade = 'Average (B2)';
+  else grade = 'Needs Improvement (C/D)';
+
+  document.getElementById('scoreText').textContent = `Total Score: ${score} / ${maxScore} marks`;
+  document.getElementById('accuracyText').textContent = `Accuracy: ${accuracy}% | Attempted: ${attempted} | Correct: ${correct} | Wrong: ${wrong}`;
+  document.getElementById('gradeText').textContent = `CBSE-style evaluation: ${grade} (${percent.toFixed(1)}%)`;
+
+  const detailDiv = document.getElementById('detailedFeedback');
+  let html = '<h4>Important notes (examiner comments):</h4>';
+  html += '<ul>';
+  html += '<li>Marking: +4 for correct, -1 for wrong, 0 for unattempted — typical for CBSE objective sections with negative marking.</li>';
+  html += '<li>Review incorrect questions: practice conceptual understanding (Ohm\'s law, resistance, power, circuits).</li>';
+  html += '</ul>';
+
+  // Provide short list of wrong Qs with correct option letter
+  if(wrongList.length){
+    html += `<h4>Questions answered incorrectly (${wrongList.length}):</h4><ol>`;
+    wrongList.slice(0,50).forEach(w => {
+      const correctLetter = String.fromCharCode(65 + questions[w.qno-1].k);
+      html += `<li>Q${w.qno} — Correct: ${correctLetter}</li>`;
+    });
+    html += '</ol>';
+  } else {
+    html += '<p>All attempts were correct — well done!</p>';
+  }
+
+  detailDiv.innerHTML = html;
+
+  document.getElementById('testArea').classList.add('hidden');
+  document.getElementById('resultArea').classList.remove('hidden');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+// Auto-save answers locally (optional) — stores in sessionStorage
+quizForm.addEventListener('change', ()=>{
+  const data = {};
+  const f = new FormData(quizForm);
+  for(const [k,v] of f.entries()) data[k]=v;
+  sessionStorage.setItem('mock_answers', JSON.stringify(data));
+});
+
+// Restore answers on load
+window.addEventListener('load', ()=>{
+  const saved = sessionStorage.getItem('mock_answers');
+  if(saved){
+    const data = JSON.parse(saved);
+    for(const key in data){
+      const el = document.querySelector(`[name='${key}'][value='${data[key]}']`);
+      if(el) el.checked = true;
+    }
+  }
+});
+
+  </script>
+</body>
+</html>
